@@ -31,7 +31,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "app.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -49,8 +49,6 @@ extern "C" {
 
 /* USER CODE END EM */
 
-void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
-
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -59,6 +57,14 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define AIN2_Pin GPIO_PIN_1
+#define AIN2_GPIO_Port GPIOA
+#define AIN1_Pin GPIO_PIN_4
+#define AIN1_GPIO_Port GPIOA
+#define BIN1_Pin GPIO_PIN_14
+#define BIN1_GPIO_Port GPIOB
+#define BIN2_Pin GPIO_PIN_15
+#define BIN2_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
