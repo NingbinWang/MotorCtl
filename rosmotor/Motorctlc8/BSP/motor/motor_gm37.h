@@ -10,5 +10,7 @@
 #include <stdint.h>
 void MotorGM37ASetSpeed(int8_t _direction, int16_t _speed);
 void MotorGM37BSetSpeed(int8_t _direction, int16_t _speed);
+void MotorGM37APWMStart();
+void MotorGM37BPWMStart();
 
 #endif /* MOTOR_MOTOR_GM37_H_ */

@@ -6,7 +6,8 @@
 
 void App_Init()
 {
-	MotorGM37ASetSpeed(0, 500);
+	MotorGM37APWMStart();
+	MotorGM37ASetSpeed(0, 1000);
 	//Wifi_UserInit();
 }
 

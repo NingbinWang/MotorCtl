@@ -127,6 +127,16 @@ void MotorGM37BSetSpeed(int8_t _direction, int16_t _speed)
 
 }
 
+void MotorGM37APWMStart()
+{
+    HAL_TIM_PWM_Start(MOTORGM37A_PWM, MOTORGM37A_PWM_CH);
+}
+
+
+void MotorGM37BPWMStart()
+{
+    HAL_TIM_PWM_Start(MOTORGM37B_PWM, MOTORGM37B_PWM_CH);
+}
 
 
 #endif
