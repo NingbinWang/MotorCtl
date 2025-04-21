@@ -46,6 +46,21 @@ void MotorGM37A_Backward(void)
 }
 /*
 *********************************************************************************************************
+*	函 数 名: MotorA_Stop
+*	功能说明: 电机A停止
+*	形    参: 无
+*	返 回 值: 无
+*********************************************************************************************************
+*/
+void MotorA_Stop(void)
+{
+    HAL_GPIO_WritePin(MOTORGM37A_AIN1_GPIO_Port, MOTORGM37A_AIN1_Pin, GPIO_PIN_RESET);
+
+    HAL_GPIO_WritePin(MOTORGM37A_AIN2_GPIO_Port, MOTORGM37A_AIN2_Pin, GPIO_PIN_RESET);
+
+}
+/*
+*********************************************************************************************************
 *	函 数 名: MotorB_Forward
 *	功能说明: 电机B正转
 *	形    参: 无
@@ -54,9 +69,9 @@ void MotorGM37A_Backward(void)
 */
 void MotorGM37B_Forward(void)
 {
-    HAL_GPIO_WritePin(MOTORGM37A_BIN1_GPIO_Port, MOTORGM37A_BIN1_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(MOTORGM37B_BIN1_GPIO_Port, MOTORGM37B_BIN1_Pin, GPIO_PIN_RESET);
 
-    HAL_GPIO_WritePin(MOTORGM37A_BIN2_GPIO_Port, GPIO_PIN_3, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(MOTORGM37B_BIN2_GPIO_Port, MOTORGM37B_BIN2_Pin, GPIO_PIN_SET);
 
 }
 /*
@@ -69,8 +84,8 @@ void MotorGM37B_Forward(void)
 */
 void MotorGM37B_Backward(void)
 {
-    HAL_GPIO_WritePin(MOTORGM37A_BIN1_GPIO_Port, MOTORGM37A_BIN1_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(MOTORGM37A_BIN2_GPIO_Port, MOTORGM37A_BIN2_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(MOTORGM37B_BIN1_GPIO_Port, MOTORGM37B_BIN1_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(MOTORGM37B_BIN2_GPIO_Port, MOTORGM37B_BIN2_Pin, GPIO_PIN_RESET);
 }
 
 /*
