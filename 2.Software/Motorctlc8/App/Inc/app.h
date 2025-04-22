@@ -3,5 +3,6 @@
 
 #include <stdio.h>
 void App_Init();
+void App_Show();
 
 #endif

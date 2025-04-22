@@ -112,11 +112,11 @@ void MotorGM37_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	 }
 
 
-    for(int i = 0; i < 8; i ++)//每次更新中断时，清空：s_EncodeValue[i]
-    {
-        sEncodeValue[i] = 0;
+   // for(int i = 0; i < 8; i ++)//每次更新中断时，清空：s_EncodeValue[i]
+   // {
+   //     sEncodeValue[i] = 0;
 
-    }
+   // }
     SendWheelSpeed[0] = -gWheelSpeed[0];
 	SendWheelSpeed[1] = -gWheelSpeed[1];
     //KDCOM_SendData(KDCOM_SetData(&kdrobot_channel_1,0,SendWheelSpeed[0],_sMotorA_Speed_M),sizeof(kdrobot_channel_1));
@@ -125,9 +125,22 @@ void MotorGM37_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 }
 
 
+int16_t MotorGM37_GetEncodeValue(int index)
+{
+	return sEncodeValue[index];
+}
 
+int16_t MotorGM37_GetSendWheelSpeed(int index)
+{
+	return SendWheelSpeed[index];
+}
 
-
+void MotorGM37_Hallencoder_Start()
+{
+	HAL_TIM_Base_MspInit(MOTORGM37A_EXT_TIMER);
+	HAL_TIM_IC_Start_IT(MOTORGM37A_TIMER, MOTORGM37A_EXT_CH);
+	HAL_TIM_IC_Start_IT(MOTORGM37B_TIMER, MOTORGM37B_EXT_CH);
+}
 
 #endif
 

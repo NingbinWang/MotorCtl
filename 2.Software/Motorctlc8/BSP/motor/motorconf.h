@@ -35,6 +35,8 @@
 #define MOTORGM37B_HALL_GPIO_Port            GPIOB
 #define MOTORGM37B_HALL_Pin                  GPIO_PIN_1
 
+#define MOTORGM37A_TIMER                       &htim3
+#define MOTORGM37B_TIMER                       &htim3
 #define MOTORGM37A_EXT_TIMER                 TIM3
 #define MOTORGM37A_EXT_CH                    HAL_TIM_ACTIVE_CHANNEL_1
 

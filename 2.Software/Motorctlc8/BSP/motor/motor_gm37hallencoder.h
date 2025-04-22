@@ -23,8 +23,10 @@ typedef struct {
 }Encoder_t;
 
 void MotorGM37_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
+int16_t MotorGM37_GetSendWheelSpeed(int index);
+int16_t MotorGM37_GetEncodeValue(int index);
+void MotorGM37_Hallencoder_Start();
 //extern Encoder_t gEncoderValue;
-
 //extern int16_t gWheelSpeed[4];
 //extern int16_t SendWheelSpeed[4];
 

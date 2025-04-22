@@ -25,7 +25,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "app.h"
+#include "motor_gm37.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,8 +49,6 @@
 
 /* USER CODE END Variables */
 osThreadId IMUTaskHandle;
-osThreadId DataTaskHandle;
-osThreadId BlanceTaskHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -57,8 +56,6 @@ osThreadId BlanceTaskHandle;
 /* USER CODE END FunctionPrototypes */
 
 void IMUFunc(void const * argument);
-void DataFunc(void const * argument);
-void BlanceFunc(void const * argument);
 
 extern void MX_USB_DEVICE_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
@@ -107,16 +104,8 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the thread(s) */
   /* definition and creation of IMUTask */
-  osThreadDef(IMUTask, IMUFunc, osPriorityNormal, 0, 128);
+  osThreadDef(IMUTask, IMUFunc, osPriorityNormal, 0, 256);
   IMUTaskHandle = osThreadCreate(osThread(IMUTask), NULL);
-
-  /* definition and creation of DataTask */
-  osThreadDef(DataTask, DataFunc, osPriorityNormal, 0, 128);
-  DataTaskHandle = osThreadCreate(osThread(DataTask), NULL);
-
-  /* definition and creation of BlanceTask */
-  osThreadDef(BlanceTask, BlanceFunc, osPriorityNormal, 0, 128);
-  BlanceTaskHandle = osThreadCreate(osThread(BlanceTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -139,45 +128,13 @@ void IMUFunc(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	MotorGM37ASetSpeed(0, 0);
+    osDelay(100);
+    MotorGM37ASetSpeed(0, 1000);
+    osDelay(100);
+    App_Show();
   }
   /* USER CODE END IMUFunc */
-}
-
-/* USER CODE BEGIN Header_DataFunc */
-/**
-* @brief Function implementing the DataTask thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_DataFunc */
-void DataFunc(void const * argument)
-{
-  /* USER CODE BEGIN DataFunc */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END DataFunc */
-}
-
-/* USER CODE BEGIN Header_BlanceFunc */
-/**
-* @brief Function implementing the BlanceTask thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_BlanceFunc */
-void BlanceFunc(void const * argument)
-{
-  /* USER CODE BEGIN BlanceFunc */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END BlanceFunc */
 }
 
 /* Private application code --------------------------------------------------*/
