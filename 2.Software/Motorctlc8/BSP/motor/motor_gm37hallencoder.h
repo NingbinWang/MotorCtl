@@ -22,7 +22,8 @@ typedef struct {
     CarSpeedInfo_t MotorB_EncoderValue;
 }Encoder_t;
 
-void MotorGM37_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
+void MotorGM37_UpdateSpeed(void);
+void MotorGM37_IC_CaptureCallback(TIM_HandleTypeDef *htim);/*输入捕获中断回调函数*/
 int16_t MotorGM37_GetSendWheelSpeed(int index);
 int16_t MotorGM37_GetEncodeValue(int index);
 void MotorGM37_Hallencoder_Start();

@@ -34,6 +34,7 @@ void GetSpeedInfo(int16_t *_speed, uint16_t _EncoderDirection1, uint16_t _Encode
 			*_speed = -1 * _encoder * 20 * 3.1416 * 65  / 330; //65-轮胎直径 330-编码器线数 20-编码器获取方波的频率
 }
 
+
 /*
 *********************************************************************************************************
 *	函 数 名: HAL_TIM_IC_CaptureCallback
@@ -42,11 +43,14 @@ void GetSpeedInfo(int16_t *_speed, uint16_t _EncoderDirection1, uint16_t _Encode
 *	返 回 值: 无
 *********************************************************************************************************
 */
-void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)/*输入捕获中断回调函数*/
+
+void MotorGM37_IC_CaptureCallback(TIM_HandleTypeDef *htim)/*输入捕获中断回调函数*/
 {
+	//char showcount[56];
+
     if(htim->Instance == MOTORGM37A_EXT_TIMER)/*判断定时器*/
     {
-         if(htim->Channel == MOTORGM37A_EXT_CH)/*判断通道*/
+         if(htim->Channel == MOTORGM37A_EXT_ACVITE_CH)/*判断通道*/
         {
             if(HAL_GPIO_ReadPin(MOTORGM37A_HALL_GPIO_Port, MOTORGM37A_HALL_Pin) == 1)
             {
@@ -60,13 +64,14 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)/*输入捕获中断回�
                 sEncodeValue[1] ++;
 
             }
-          //  printf("d: %d\n", gEncoderValue.MotorA_EncoderValue.dir);
+            //  printf("d: %d\n", gEncoderValue.MotorA_EncoderValue.dir);
         }
+
     }
 
     if(htim->Instance == MOTORGM37B_EXT_TIMER)/*判断定时器*/
     {
-         if(htim->Channel == MOTORGM37B_EXT_CH)/*判断通道*/
+         if(htim->Channel == MOTORGM37B_EXT_ACVITE_CH)/*判断通道*/
         {
             if(HAL_GPIO_ReadPin(MOTORGM37B_HALL_GPIO_Port, MOTORGM37B_HALL_Pin) == 1)
             {
@@ -78,57 +83,28 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)/*输入捕获中断回�
             {
             	gEncoderValue.MotorB_EncoderValue.dir = 0;
                 sEncodeValue[3] ++;
-
             }
-          //  printf("d: %d\n", gEncoderValue.MotorA_EncoderValue.dir);
+          //  printf("d: %d\n", gEncoderValue.MotorB_EncoderValue.dir);
         }
     }
+
 }
 
-/*
-*********************************************************************************************************
-*	函 数 名: HAL_TIM_PeriodElapsedCallback
-*	功能说明: 定时器5更新中断
-*	形    参: htim
-*	返 回 值: 无
-*********************************************************************************************************
-*/
 
-void MotorGM37_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+//
+void MotorGM37_UpdateSpeed(void)
 {
-	 if(htim->Instance == MOTORGM37A_EXT_TIMER)/*判断定时器*/
-	 {
-		 if(htim->Channel == MOTORGM37A_EXT_CH)/*判断通道*/
-		 {
-			 GetSpeedInfo(gWheelSpeed, sEncodeValue[0], sEncodeValue[1], gEncoderValue.MotorA_EncoderValue.dir);
-		 }
-	 }
-	 if(htim->Instance == MOTORGM37B_EXT_TIMER)/*判断定时器*/
-	 {
-	     if(htim->Channel == MOTORGM37B_EXT_CH)/*判断通道*/
-	     {
-               GetSpeedInfo(gWheelSpeed + 1, sEncodeValue[2], sEncodeValue[3], gEncoderValue.MotorB_EncoderValue.dir);
-	     }
-	 }
-
-
-   // for(int i = 0; i < 8; i ++)//每次更新中断时，清空：s_EncodeValue[i]
-   // {
-   //     sEncodeValue[i] = 0;
-
-   // }
+    GetSpeedInfo(gWheelSpeed, sEncodeValue[0], sEncodeValue[1], gEncoderValue.MotorA_EncoderValue.dir);
+    GetSpeedInfo(gWheelSpeed + 1, sEncodeValue[2], sEncodeValue[3], gEncoderValue.MotorB_EncoderValue.dir);
     SendWheelSpeed[0] = -gWheelSpeed[0];
-	SendWheelSpeed[1] = -gWheelSpeed[1];
-    //KDCOM_SendData(KDCOM_SetData(&kdrobot_channel_1,0,SendWheelSpeed[0],_sMotorA_Speed_M),sizeof(kdrobot_channel_1));
-	//KDCOM_SendData(KDCOM_SetData(&kdrobot_channel_2,1,SendWheelSpeed[1],_sMotorB_Speed_M),sizeof(kdrobot_channel_2));
-
+    SendWheelSpeed[1] = -gWheelSpeed[1];
+	for(int i = 0; i < 4; i ++)//每次更新中断时，清空：s_EncodeValue[i]
+	{
+		 sEncodeValue[i] = 0;
+	}
+	//SEND DATA:
 }
 
-
-int16_t MotorGM37_GetEncodeValue(int index)
-{
-	return sEncodeValue[index];
-}
 
 int16_t MotorGM37_GetSendWheelSpeed(int index)
 {
@@ -137,7 +113,7 @@ int16_t MotorGM37_GetSendWheelSpeed(int index)
 
 void MotorGM37_Hallencoder_Start()
 {
-	HAL_TIM_Base_MspInit(MOTORGM37A_EXT_TIMER);
+	//HAL_TIM_Base_MspInit(MOTORGM37A_EXT_TIMER);
 	HAL_TIM_IC_Start_IT(MOTORGM37A_TIMER, MOTORGM37A_EXT_CH);
 	HAL_TIM_IC_Start_IT(MOTORGM37B_TIMER, MOTORGM37B_EXT_CH);
 }

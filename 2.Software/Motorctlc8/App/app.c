@@ -11,17 +11,16 @@ void App_Init()
 
 	MotorGM37APWMStart();
 	MotorGM37_Hallencoder_Start();
-	MotorGM37ASetSpeed(0, 1000);
+	MotorGM37ASetSpeed(1, 1000);
 	ssd1306_Init();
 }
 
 void App_Show()
 {
 	char showcount[256];
-	sprintf(showcount,"gma %d %d %d",i++,MotorGM37_GetEncodeValue(0),MotorGM37_GetSendWheelSpeed(0));
-	if(i == 100)
-		i = 0;
 	ssd1306_SetCursor(0,0);
+	MotorGM37_UpdateSpeed();
+	sprintf(showcount,"speed %d %d",MotorGM37_GetSendWheelSpeed(0),MotorGM37_GetSendWheelSpeed(1));
 	ssd1306_WriteString(showcount,Font_7x10,White);
 	ssd1306_UpdateScreen();
 }

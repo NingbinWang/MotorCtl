@@ -26,7 +26,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "app.h"
-#include "motor_gm37.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,14 +47,18 @@
 /* USER CODE BEGIN Variables */
 
 /* USER CODE END Variables */
+osThreadId MainTaskHandle;
 osThreadId IMUTaskHandle;
+osThreadId DataTaskHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 
 /* USER CODE END FunctionPrototypes */
 
+void MainFunc(void const * argument);
 void IMUFunc(void const * argument);
+void DataFunc(void const * argument);
 
 extern void MX_USB_DEVICE_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
@@ -103,9 +106,17 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
+  /* definition and creation of MainTask */
+  osThreadDef(MainTask, MainFunc, osPriorityNormal, 0, 256);
+  MainTaskHandle = osThreadCreate(osThread(MainTask), NULL);
+
   /* definition and creation of IMUTask */
-  osThreadDef(IMUTask, IMUFunc, osPriorityNormal, 0, 256);
+  osThreadDef(IMUTask, IMUFunc, osPriorityNormal, 0, 128);
   IMUTaskHandle = osThreadCreate(osThread(IMUTask), NULL);
+
+  /* definition and creation of DataTask */
+  osThreadDef(DataTask, DataFunc, osPriorityIdle, 0, 256);
+  DataTaskHandle = osThreadCreate(osThread(DataTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -113,28 +124,61 @@ void MX_FREERTOS_Init(void) {
 
 }
 
-/* USER CODE BEGIN Header_IMUFunc */
+/* USER CODE BEGIN Header_MainFunc */
 /**
-  * @brief  Function implementing the IMUTask thread.
+  * @brief  Function implementing the MainTask thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_IMUFunc */
-void IMUFunc(void const * argument)
+/* USER CODE END Header_MainFunc */
+void MainFunc(void const * argument)
 {
   /* init code for USB_DEVICE */
   MX_USB_DEVICE_Init();
+  /* USER CODE BEGIN MainFunc */
+  /* Infinite loop */
+  for(;;)
+  {
+     osDelay(50);
+     App_Show();
+  }
+  /* USER CODE END MainFunc */
+}
+
+/* USER CODE BEGIN Header_IMUFunc */
+/**
+* @brief Function implementing the IMUTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_IMUFunc */
+void IMUFunc(void const * argument)
+{
   /* USER CODE BEGIN IMUFunc */
   /* Infinite loop */
   for(;;)
   {
-	MotorGM37ASetSpeed(0, 0);
-    osDelay(100);
-    MotorGM37ASetSpeed(0, 1000);
-    osDelay(100);
-    App_Show();
+    osDelay(1);
   }
   /* USER CODE END IMUFunc */
+}
+
+/* USER CODE BEGIN Header_DataFunc */
+/**
+* @brief Function implementing the DataTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_DataFunc */
+void DataFunc(void const * argument)
+{
+  /* USER CODE BEGIN DataFunc */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END DataFunc */
 }
 
 /* Private application code --------------------------------------------------*/
