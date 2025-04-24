@@ -140,7 +140,7 @@ void MainFunc(void const * argument)
   for(;;)
   {
      osDelay(50);
-     App_Show();
+     App_Func();
   }
   /* USER CODE END MainFunc */
 }
@@ -158,7 +158,7 @@ void IMUFunc(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    osDelay(5);
   }
   /* USER CODE END IMUFunc */
 }
@@ -176,7 +176,7 @@ void DataFunc(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    osDelay(100);
   }
   /* USER CODE END DataFunc */
 }

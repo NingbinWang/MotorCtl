@@ -78,6 +78,7 @@
 									<listOptionValue builtIn="false" value="../BSP/sdio_sdcard"/>
 									<listOptionValue builtIn="false" value="../App/interact"/>
 									<listOptionValue builtIn="false" value="../BSP/ssd1306"/>
+									<listOptionValue builtIn="false" value="../BSP/lsm6ds3tr"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.602601523" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
